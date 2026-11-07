@@ -1,0 +1,286 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<title>Customer Management</title>
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: #eef4ff;
+    margin: 0;
+}
+
+nav {
+    background: #173b70;
+    color: white;
+    padding: 20px 35px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+nav a {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.container {
+    width: 85%;
+    margin: 35px auto;
+    background: white;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px #ccd5e5;
+}
+
+h2 {
+    color: #2878d0;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+
+input, textarea {
+    width: 100%;
+    padding: 14px;
+    border: 1px solid #ccc;
+    border-radius: 7px;
+    font-size: 15px;
+}
+
+textarea {
+    grid-column: span 2;
+    resize: vertical;
+}
+
+button {
+    padding: 13px 25px;
+    border: none;
+    border-radius: 7px;
+    color: white;
+    background: #2878d0;
+    cursor: pointer;
+    font-size: 15px;
+    margin-top: 15px;
+}
+
+button:hover {
+    background: #173b70;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 25px;
+}
+
+th, td {
+    padding: 13px;
+    border: 1px solid #ddd;
+    text-align: center;
+}
+
+th {
+    background: #2878d0;
+    color: white;
+}
+
+tr:nth-child(even) {
+    background: #f1f6ff;
+}
+
+#popup {
+    display: none;
+    position: fixed;
+    top: 25px;
+    right: 25px;
+    padding: 18px 25px;
+    color: white;
+    border-radius: 8px;
+    font-weight: bold;
+    box-shadow: 0 4px 12px #888;
+    z-index: 10;
+}
+
+.success {
+    background: #159b76;
+}
+
+.error {
+    background: #dc3545;
+}
+
+@media(max-width: 650px) {
+    .container {
+        width: 95%;
+    }
+
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+
+    textarea {
+        grid-column: span 1;
+    }
+
+    table {
+        font-size: 12px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<nav>
+    <h2 style="color:white">WashCare - Customers</h2>
+    <a href="hp1.html">← Home</a>
+</nav>
+
+<div class="container">
+
+    <h2>Customer Registration</h2>
+
+    <form id="customerForm">
+
+        <div class="form-grid">
+
+            <input type="text" id="name"
+            placeholder="Customer Name" required>
+
+            <input type="tel" id="cell_no"
+            placeholder="Mobile Number" required>
+
+            <input type="email" id="email"
+            placeholder="Email Address" required>
+
+            <textarea id="address"
+            placeholder="Customer Address" required></textarea>
+
+        </div>
+
+        <button type="submit">Add Customer</button>
+
+    </form>
+
+    <h2>Customer Records</h2>
+
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Mobile</th>
+                <th>Email</th>
+                <th>Address</th>
+            </tr>
+        </thead>
+
+        <tbody id="customerList">
+        </tbody>
+    </table>
+
+</div>
+
+<div id="popup"></div>
+
+<script>
+
+function showPopup(message, type) {
+    let popup = document.getElementById("popup");
+
+    popup.innerText = message;
+    popup.className = type;
+    popup.style.display = "block";
+
+    setTimeout(() => {
+        popup.style.display = "none";
+    }, 3000);
+}
+
+async function loadCustomers() {
+    try {
+        let response = await fetch("/customers");
+
+        if (!response.ok) {
+            throw new Error("Unable to load customers");
+        }
+
+        let data = await response.json();
+
+        let rows = "";
+
+        data.forEach(c => {
+            rows += `
+            <tr>
+                <td>${c.customer_id}</td>
+                <td>${c.name}</td>
+                <td>${c.cell_no}</td>
+                <td>${c.email}</td>
+                <td>${c.address}</td>
+            </tr>`;
+        });
+
+        document.getElementById("customerList").innerHTML = rows;
+
+    } catch (error) {
+        console.error(error);
+        showPopup("Failed to load customer records!", "error");
+    }
+}
+
+document.getElementById("customerForm")
+.addEventListener("submit", async function(e) {
+
+    e.preventDefault();
+
+    let customer = {
+        name: document.getElementById("name").value.trim(),
+        cell_no: document.getElementById("cell_no").value.trim(),
+        email: document.getElementById("email").value.trim(),
+        address: document.getElementById("address").value.trim()
+    };
+
+    try {
+
+        let response = await fetch("/customers", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(customer)
+        });
+
+        let result = await response.json();
+
+        if (!response.ok) {
+            throw new Error(result.message || "Customer registration failed");
+        }
+
+        showPopup("Customer Added Successfully!", "success");
+
+        this.reset();
+
+        await loadCustomers();
+
+    } catch (error) {
+        showPopup(error.message, "error");
+    }
+
+});
+
+loadCustomers();
+
+</script>
+
+</body>
+</html>

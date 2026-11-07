@@ -1,0 +1,174 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MRNR Laundry Management</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #eef3ff;
+            min-height: 100vh;
+        }
+
+        nav {
+            background: #173b70;
+            color: white;
+            padding: 22px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        nav h2 {
+            font-size: 25px;
+        }
+
+        nav span {
+            font-size: 15px;
+        }
+
+        .hero {
+            text-align: center;
+            padding: 55px 20px 35px;
+        }
+
+        .hero h1 {
+            color: #173b70;
+            font-size: 36px;
+            margin-bottom: 15px;
+        }
+
+        .hero p {
+            color: #555;
+            font-size: 17px;
+        }
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(280px, 380px));
+            justify-content: center;
+            gap: 30px;
+            padding: 25px;
+        }
+
+        .card {
+            min-height: 190px;
+            padding: 40px 25px;
+            border-radius: 18px;
+            color: white;
+            text-align: center;
+            text-decoration: none;
+
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+
+            transition: 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-8px) scale(1.03);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        }
+
+        .card h2 {
+            font-size: 28px;
+            margin-bottom: 15px;
+        }
+
+        .card p {
+            font-size: 17px;
+        }
+
+        .blue {
+            background: #2878d0;
+        }
+
+        .green {
+            background: #159b76;
+        }
+
+        .purple {
+            background: #8652cc;
+        }
+
+        .orange {
+            background: #ed8732;
+        }
+
+        footer {
+            text-align: center;
+            padding: 25px;
+            color: #555;
+            font-size: 15px;
+        }
+
+        @media (max-width: 650px) {
+            nav {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .cards {
+                grid-template-columns: 1fr;
+            }
+
+            .hero h1 {
+                font-size: 28px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav>
+        <h2>MRNR Laundry</h2>
+        <span>Laundry Management System</span>
+    </nav>
+
+    <section class="hero">
+        <h1>Welcome to MRNR LAUNDRY</h1>
+        <p>Manage Customers, Services, Orders and Payments Easily</p>
+    </section>
+
+    <section class="cards">
+
+        <a href="p2.html" class="card blue">
+            <h2>Customers</h2>
+            <p>Manage Customer Details</p>
+        </a>
+
+        <a href="p3.html" class="card green">
+            <h2>Services</h2>
+            <p>Manage Laundry Services</p>
+        </a>
+
+        <a href="p4.html" class="card purple">
+            <h2>Orders</h2>
+            <p>Manage Laundry Orders</p>
+        </a>
+
+        <a href="p5.html" class="card orange">
+            <h2>Payments</h2>
+            <p>Manage Customer Payments</p>
+        </a>
+
+    </section>
+
+    <footer>
+        &copy; 2026 MRNR Laundry Management System
+    </footer>
+
+</body>
+</html>
